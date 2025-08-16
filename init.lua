@@ -34,7 +34,7 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     -- add your plugins here
---[[    {
+    {
       "nvim-treesitter/nvim-treesitter",
         branch = "master",
         build = ":TSUpdate",
@@ -49,14 +49,14 @@ require("lazy").setup({
             indent = { enable = true },
           })
       end,
-    }, --]]
+    }, 
     { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
-    { 
+    --[[{ 
       'nvim-treesitter/nvim-treesitter',
       lazy = false,
       branch = 'main',
       build = ':TSUpdate'
-    },
+    },]]--
     {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
 -- or                              , branch = '0.1.x',
@@ -88,13 +88,13 @@ require("lazy").setup({
   checker = { enabled = true },
 })
 
-require'nvim-treesitter'.setup {
+--[[require'nvim-treesitter'.setup {
   -- Directory to install parsers and queries to
   ensure_installed = { "c", "cpp", "rust", "lua" },
   highlight = { enable = true },
   indent = { enable = true },
   install_dir = vim.fn.stdpath('data') .. '/site'
-}
+} --]]
 
 local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<C-p>', builtin.find_files, {})
