@@ -88,7 +88,9 @@ require("lazy").setup({
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
-    }
+    },
+    { "sphamba/smear-cursor.nvim", opts = {}, },
+    { "nvzone/typr", dependencies = "nvzone/volt", opts = {}, cmd = {"Typr", "TyprStats"}, }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- automatically check for plugin updates
