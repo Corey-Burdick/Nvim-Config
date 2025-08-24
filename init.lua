@@ -110,5 +110,6 @@ local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<C-p>', builtin.find_files, {})
 vim.keymap.set('n', '<C-n>', ":Neotree filesystem reveal left <CR>", {})
 vim.keymap.set('n', '<C-t>', ':10split | terminal<CR>', {})
+vim.keymap.set('i', 'jk', "<Esc>", { noremap = false })
 vim.o.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
