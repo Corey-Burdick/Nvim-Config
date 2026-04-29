@@ -1,117 +1,44 @@
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=2")
-vim.cmd("set softtabstop=2")
-vim.cmd("set shiftwidth=2")
-vim.opt.splitbelow = true
-vim.opt.number = true
-
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
-
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
-
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
-    -- add your plugins here
-    {
-      "nvim-treesitter/nvim-treesitter",
-        branch = "master",
-        build = ":TSUpdate",
-        -- This command builds/updates parsers
-        config = function()
-          -- Optional: Configure nvim-treesitter options here
-          local configs = require("nvim-treesitter.configs")
-          configs.setup({
-            ensure_installed = { "c", "cpp", "lua", "vim" }, -- Example languages to install
-            sync_install = false,
-            highlight = { enable = true },
-            indent = { enable = true },
-          })
-      end,
-    }, 
-    {'sition/nvim-numbertoggle'},
-    { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
-    --[[{ 
-      'nvim-treesitter/nvim-treesitter',
-      lazy = false,
-      branch = 'main',
-      build = ':TSUpdate'
-    },]]--
-    {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
--- or                              , branch = '0.1.x',
-      dependencies = { 'nvim-lua/plenary.nvim' }
-    },
-  	{
-        "nvim-neo-tree/neo-tree.nvim",
-        branch = "v3.x",
-        dependencies = {
-          "nvim-lua/plenary.nvim",
-          "MunifTanjim/nui.nvim",
-          "nvim-tree/nvim-web-devicons", -- optional, but recommended
-        },
-       lazy = false, -- neo-tree will lazily load itself
-    },
-    {
-      "nvim-lualine/lualine.nvim",
-      config = function()
-        require('lualine').setup({
-          options = {
-            theme = 'dracula'
-          }
-      })
-      end
-    },
-    { 'tribela/transparent.nvim', event = 'VimEnter', config = true, },
-    {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
-    },
-    { "sphamba/smear-cursor.nvim", opts = {}, },
-    { "nvzone/typr", dependencies = "nvzone/volt", opts = {}, cmd = {"Typr", "TyprStats"}, }
-  },
-  -- Configure any other settings here. See the documentation for more details.
-  -- automatically check for plugin updates
-  checker = { enabled = true },
+-- Add all plugins
+vim.pack.add({
+  'https://github.com/nvim-mini/mini.nvim',
+  'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/nvim-treesitter/nvim-treesitter',
+  'https://github.com/ellisonleao/gruvbox.nvim',
+  'https://github.com/sitiom/nvim-numbertoggle',
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/MunifTanjim/nui.nvim',
+  'https://github.com/nvim-tree/nvim-web-devicons',
+  'https://github.com/nvim-lualine/lualine.nvim',
+  'https://github.com/nvim-telescope/telescope.nvim',
+  'https://github.com/nvim-neo-tree/neo-tree.nvim',
 })
 
---[[require'nvim-treesitter'.setup {
-  -- Directory to install parsers and queries to
-  ensure_installed = { "c", "cpp", "rust", "lua" },
-  highlight = { enable = true },
-  indent = { enable = true },
-  install_dir = vim.fn.stdpath('data') .. '/site'
-} --]]
+-- Use plugins immediately
+vim.cmd.colorscheme('gruvbox')
+require('mini.basics').setup()
+require('mini.surround').setup()
+vim.lsp.enable({ 'lua_ls' })
+vim.lsp.enable({ 'clangd' })
 
-local builtin = require("telescope.builtin")
-vim.keymap.set('n', '<C-p>', builtin.find_files, {})
+-- Set Up Lualine
+require('lualine').setup({
+  options = {
+    theme = 'auto', -- Automatically detects your colorscheme
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  }
+})
+
 vim.keymap.set('n', '<C-n>', ":Neotree filesystem reveal left <CR>", {})
 vim.keymap.set('n', '<C-t>', ':10split | terminal<CR>', {})
 vim.keymap.set('i', 'jk', "<Esc>", { noremap = false })
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = false })
 vim.o.background = "dark"
-vim.cmd([[colorscheme gruvbox]])
