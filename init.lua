@@ -11,6 +11,7 @@ vim.pack.add({
   'https://github.com/nvim-lualine/lualine.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-neo-tree/neo-tree.nvim',
+  'https://github.com/tribela/transparent.nvim',
 })
 
 -- Use plugins immediately
