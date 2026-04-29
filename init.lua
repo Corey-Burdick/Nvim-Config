@@ -37,6 +37,12 @@ require('lualine').setup({
   }
 })
 
+-- Typing preferences
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+
 vim.keymap.set('n', '<C-n>', ":Neotree filesystem reveal left <CR>", {})
 vim.keymap.set('n', '<C-t>', ':10split | terminal<CR>', {})
 vim.keymap.set('i', 'jk', "<Esc>", { noremap = false })
