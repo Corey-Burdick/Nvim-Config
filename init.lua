@@ -12,6 +12,8 @@ vim.pack.add({
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-neo-tree/neo-tree.nvim',
   'https://github.com/tribela/transparent.nvim',
+  'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+  'https://github.com/sphamba/smear-cursor.nvim',
 })
 
 -- Use plugins immediately
